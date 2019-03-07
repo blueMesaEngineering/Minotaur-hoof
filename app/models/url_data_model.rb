@@ -1,0 +1,2 @@
+class UrlDataModel < ApplicationRecord
+end
