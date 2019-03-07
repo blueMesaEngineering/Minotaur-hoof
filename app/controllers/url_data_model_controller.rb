@@ -1,2 +1,0 @@
-class UrlDataModelController < ApplicationController
-end

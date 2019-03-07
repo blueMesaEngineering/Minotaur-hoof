@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UrlDataModelControllerTest < ActionDispatch::IntegrationTest
+class UrlDataModelsControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

@@ -1,0 +1,14 @@
+<% provide(:title, "New model") %>
+
+<h1>New Metadata Model</h1>
+
+<%= form_with scope: :url_data_model, url: url_data_models_path, local: true do |form| %>
+	<p>
+		<%= form.label :url_address %>
+		<%= form.text_field :url_address %>
+	</p>
+
+	<p>
+		<%= form.submit %>
+	</p>
+<% end %>
