@@ -3,6 +3,7 @@ class UrlDataModelsController < ApplicationController
 
 	def index
 		@url_data_models = UrlDataModel.all
+
 	end
 
 
@@ -31,6 +32,17 @@ class UrlDataModelsController < ApplicationController
 
 		redirect_to @url_data_model
 	
+	end
+
+
+
+	def destroy
+
+		@url_data_model = UrlDataModel.find(params[:id])
+		@url_data_model.destroy
+
+		redirect_to url_data_models_path		
+		
 	end
 
 
@@ -115,7 +127,7 @@ class UrlDataModelsController < ApplicationController
 
 		DocRaptor.configure do |dr|
 
-		  dr.username  = "iGuXSvSDNGitqcqQqeE" # this key works for test documents
+		  dr.username  = "YOUR_API_KEY_HERE" # this key works for test documents
 		  # dr.debugging = true
 
 		end
@@ -127,8 +139,6 @@ class UrlDataModelsController < ApplicationController
 			logPathName 		= "./storage/Logs/standardOutput/output.txt"
 			errorLogPathName	= "./storage/Logs/Error/"
 			pathName 			= "./storage/PDFs/"
-			# url 				= "http://docraptor.com/examples/invoice.html"
-			url 				= "http://www.docraptor.com"
 			address 			= params[:url_data_model][:address]
 
 			fileNamePDF 		= "docraptor-ruby.pdf"
@@ -220,14 +230,13 @@ class UrlDataModelsController < ApplicationController
 		fileName = "./storage/PDFs/docraptor-ruby.pdf"
 
 		PDF::Reader.open(fileName) do |reader|
-			
+
 			params[:url_data_model][:pdf_version] = reader.pdf_version
-			# params[:url_data_model][:title] = reader.title
 			params[:url_data_model][:metadata] = reader.info.inspect
 			params[:url_data_model][:page_count] = reader.page_count
 
 		end
-		
+
 	end
 
 

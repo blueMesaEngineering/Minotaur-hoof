@@ -2,9 +2,14 @@
 <p>
 	<center>
 		<table>
+			<% @url_data_models = @url_data_models.sort_by{ |t| [t.page_count, t.address] } %>
 			<% @url_data_models.each do |url_data_model|  %>
 				<tr>
 					<td>URL: <%= url_data_model.address %></td>
+					<td><%= link_to 'Show', url_data_model_path(url_data_model) %> | </td>
+					<td><%= link_to 'Destroy', url_data_model_path(url_data_model),
+									method: :delete,
+									data: { confirm: 'Are you sure?'} %></td>
 				</tr>
 			<% end %>
 		</table>
