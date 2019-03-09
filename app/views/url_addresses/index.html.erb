@@ -1,0 +1,12 @@
+<h1>URL Addresses</h1>
+<p>
+	<center>
+		<table>
+			<% @url_addresses.each do |url_address|  %>
+				<tr>
+					<td>URL: <%= url_address.address %></td>		
+				</tr>
+			<% end %>
+		</table>
+	</center>
+</p>

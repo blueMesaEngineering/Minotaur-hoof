@@ -1,7 +1,7 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  url_address: MyString
+  address: MyString
   pdf_version: 9.99
   producer: MyString
   title: MyString
@@ -9,7 +9,7 @@ one:
   page_count: 1
 
 two:
-  url_address: MyString
+  address: MyString
   pdf_version: 9.99
   producer: MyString
   title: MyString

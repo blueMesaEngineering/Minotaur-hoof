@@ -1,0 +1,3 @@
+class UrlAddress < ApplicationRecord
+	
+end

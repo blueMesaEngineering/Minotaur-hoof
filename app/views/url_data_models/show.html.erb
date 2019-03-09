@@ -1,27 +1,34 @@
 <% provide(:title, "Show model") %>
 
 <h1>Model Details</h1>
-<p>
-	<strong>Title:</strong>
-	<%= @url_data_model.title %>
-</p>
+<center>
+	<p>
+		<strong>Title:</strong>
+		<%= @url_data_model.title %>
+	</p>
 
-<p>
-	<strong>URL:</strong>
-	<%= @url_data_model.url_address %>
-</p>
+	<p>
+		<strong>URL:</strong>
+		<%= @url_data_model.address %>
+	</p>
 
-<p>
-	<strong>PDF Version::</strong>
-	<%= @url_data_model.pdf_version %>
-</p>
+	<p>
+		<strong>PDF Version:</strong>
+		<%= @url_data_model.pdf_version %>
+	</p>
 
-<p>
-	<strong>Producer:</strong>
-	<%= @url_data_model.producer %>
-</p>
+	<p>
+		<strong>Producer:</strong>
+		<%= @url_data_model.producer %>
+	</p>
 
-<p>
-	<strong>Page Count:</strong>
-	<%= @url_data_model.page_count %>
-</p>
+	<p>
+		<strong>Page Count:</strong>
+		<%= @url_data_model.page_count %>
+	</p>
+
+	<p>
+		<strong>Metadata:</strong>
+		<%= @url_data_model.metadata %>
+	</p>
+</center>
