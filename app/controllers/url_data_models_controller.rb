@@ -27,6 +27,8 @@ class UrlDataModelsController < ApplicationController
 
 		buildModelFromURLViaPDF
 
+		parseMetadata(params[:url_data_model][:metadata])
+
 		@url_data_model = UrlDataModel.new(url_data_model_params)
 		@url_data_model.save
 
@@ -272,6 +274,41 @@ class UrlDataModelsController < ApplicationController
 		require 'fileutils'
 
 		FileUtils.rm_rf('./storage/PDFs/docraptor-ruby.pdf')
+
+	end
+
+
+
+
+
+
+	#------------------------------------------------------------------------------
+	#Name:                          parseMetadata()
+	#
+	#Purpose:                       To extract 
+	#
+	#Precondition:                  PDF exists in ./storage/PDFs/docraptor-ruby.pdf
+	#
+	#Postcondition:                 ./storage/PDFs/ is empty.
+	#
+	#                                   -----
+	#
+	#Calls:                         N/A
+	#
+	#Called By:                     index
+	#
+	#                                   -----
+	#Additional Comments: 			This function utilizes the pdfreader gem as per
+	# 								design specification requirements. It extracts
+	# 								the 
+	# 
+	#Programmer:                    ND Guthrie
+	#Date:                          20190305
+	#------------------------------------------------------------------------------
+
+	def parseMetadata(metadataString)
+		
+		
 
 	end
 
