@@ -16,4 +16,10 @@ class StaticPagesController < ApplicationController
   		
   	end
 
+    def serializedJSON
+
+      render json: UrlDataModel.find(params[:id])
+      
+    end
+
 end

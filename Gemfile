@@ -31,7 +31,11 @@ gem 'pdf-reader', '~> 2.2'
 
 gem 'fast_jsonapi', '~> 1.5'
 
+gem 'json'
+
 gem 'docraptor'
+
+gem "react_on_rails", "~> 6"
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'

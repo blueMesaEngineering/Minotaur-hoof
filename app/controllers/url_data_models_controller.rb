@@ -1,8 +1,15 @@
 class UrlDataModelsController < ApplicationController
 
+require 'json/ext'
+
 
 	def index
+
+		# render json: UrlDataModel.all
+
 		@url_data_models = UrlDataModel.all
+
+		# render jsonapi: PdfDataModelSerializer.new(UrlDataModel.all).serialized_json
 
 	end
 
@@ -18,7 +25,18 @@ class UrlDataModelsController < ApplicationController
 	def show
 
 		@url_data_model = UrlDataModel.find(params[:id])
+
+		# @json_string = PdfDataModelSerializer.new(@temp_url_data_model).serialized_json
 		
+	end
+
+
+
+
+	def showJSON
+
+		render json: UrlDataModel.find(params[:id])
+
 	end
 
 
@@ -27,7 +45,7 @@ class UrlDataModelsController < ApplicationController
 
 		buildModelFromURLViaPDF
 
-		parseMetadata(params[:url_data_model][:metadata])
+		parseMetadata
 
 		@url_data_model = UrlDataModel.new(url_data_model_params)
 		@url_data_model.save
@@ -99,7 +117,7 @@ class UrlDataModelsController < ApplicationController
 	#------------------------------------------------------------------------------
 	#Name:                          convertURLToPDF()
 	#
-	#Purpose:                       To convert a URL to PDF
+	#Purpose:                       To convert a URL to PDF.
 	#
 	#Precondition:                  URL exists
 	#
@@ -201,7 +219,7 @@ class UrlDataModelsController < ApplicationController
 	#------------------------------------------------------------------------------
 	#Name:                          readPDFData()
 	#
-	#Purpose:                       To read the data from the newly created PDF
+	#Purpose:                       To read the data from the newly created PDF.
 	#
 	#Precondition:                  PDF exists
 	#
@@ -234,8 +252,9 @@ class UrlDataModelsController < ApplicationController
 		PDF::Reader.open(fileName) do |reader|
 
 			params[:url_data_model][:pdf_version] = reader.pdf_version
-			params[:url_data_model][:metadata] = reader.info.inspect
+			params[:url_data_model][:metadata] = reader.metadata.inspect
 			params[:url_data_model][:page_count] = reader.page_count
+			@pageInfo = reader.info.inspect
 
 		end
 
@@ -248,7 +267,7 @@ class UrlDataModelsController < ApplicationController
 	#------------------------------------------------------------------------------
 	#Name:                          deletePDF()
 	#
-	#Purpose:                       To delete created PDF after reading
+	#Purpose:                       To delete created PDF after reading.
 	#
 	#Precondition:                  PDF exists in ./storage/PDFs/docraptor-ruby.pdf
 	#
@@ -258,12 +277,10 @@ class UrlDataModelsController < ApplicationController
 	#
 	#Calls:                         N/A
 	#
-	#Called By:                     index
+	#Called By:                     buildModelFromURLViaPDF
 	#
 	#                                   -----
-	#Additional Comments: 			This function utilizes the pdfreader gem as per
-	# 								design specification requirements. It extracts
-	# 								the 
+	#Additional Comments: 			This function removes the stored PDF. 
 	# 
 	#Programmer:                    ND Guthrie
 	#Date:                          20190305
@@ -285,31 +302,42 @@ class UrlDataModelsController < ApplicationController
 	#------------------------------------------------------------------------------
 	#Name:                          parseMetadata()
 	#
-	#Purpose:                       To extract 
+	#Purpose:                       To extract data from @pageInfo. 
 	#
 	#Precondition:                  PDF exists in ./storage/PDFs/docraptor-ruby.pdf
 	#
-	#Postcondition:                 ./storage/PDFs/ is empty.
+	#Postcondition:                 params[:url_data_model][:producer] and
+	# 								params[:url_data_model][:title] have been
+	# 								populated.
 	#
 	#                                   -----
 	#
 	#Calls:                         N/A
 	#
-	#Called By:                     index
+	#Called By:                     create
 	#
 	#                                   -----
-	#Additional Comments: 			This function utilizes the pdfreader gem as per
-	# 								design specification requirements. It extracts
-	# 								the 
+	#Additional Comments: 			
 	# 
 	#Programmer:                    ND Guthrie
-	#Date:                          20190305
+	#Date:                          20190309
 	#------------------------------------------------------------------------------
 
-	def parseMetadata(metadataString)
-		
-		
+	def parseMetadata
+	
+		if(@pageInfo.include? 'Producer')		
+			firstIndex = @pageInfo.index('Producer') + 11
+			params[:url_data_model][:producer] = @pageInfo[firstIndex..(@pageInfo[firstIndex + 2..@pageInfo.size()].index(',')+firstIndex)]
+		end
 
+		if(@pageInfo.include? 'Title')
+			firstIndex = @pageInfo.index('Title') + 8
+			if(@pageInfo[firstIndex..@pageInfo.size()].include? ',')
+				params[:url_data_model][:title] = @pageInfo[firstIndex..(@pageInfo[firstIndex + 2..@pageInfo.size()].index(',')+firstIndex)]
+			else
+				params[:url_data_model][:title] = @pageInfo[firstIndex..((@pageInfo.index '}') - 3)]
+			end
+		end
 	end
 
 

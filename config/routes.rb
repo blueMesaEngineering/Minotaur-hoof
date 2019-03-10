@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   root 'static_pages#home'
   get  '/about',   		     	to: 'static_pages#about'
   get  '/contact', 		     	to: 'static_pages#contact'
-  get  '/new_model',			to: 'url_data_models#new'
+  get  '/new_model',			  to: 'url_data_models#new'
+  get  '/serializedJSON',   to: 'static_pages#serializedJSON'
 
   # resources :url_addresses
   resources :url_data_models

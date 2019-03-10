@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  address: MyString
+  pdf_version: 9.99
+  producer: MyString
+  title: MyString
+  metadata: MyString
+  page_count: 1
+
+two:
+  address: MyString
+  pdf_version: 9.99
+  producer: MyString
+  title: MyString
+  metadata: MyString
+  page_count: 1

@@ -33,6 +33,11 @@
 	</p>
 
 	<p>
-		<%= link_to 'Back', url_data_models_path %>
+		<strong>Serialized JSON:</strong>
+		<%= @url_data_model.to_json %>
+	</p>
+
+	<p>
+		<%= link_to 'Serialized JSON', serializedJSON_path(:id => @url_data_model.id) %> | <%= link_to 'Back', url_data_models_path %>
 	</p>
 </center>
