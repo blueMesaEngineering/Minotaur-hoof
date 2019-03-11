@@ -1,3 +1,0 @@
-class UrlAddress < ApplicationRecord
-	
-end

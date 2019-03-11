@@ -1,19 +1,72 @@
 class UrlDataModelsController < ApplicationController
 
-require 'json/ext'
+	Bundler.require
+	require 'fileutils'
+	require "bundler/setup"
+	require 'json/ext'
+	require 'active_support'
 
+
+
+
+
+
+
+    #------------------------------------------------------------------------------
+    #Name:                          index()
+    #
+    #Purpose:                       Controller for index.
+    #
+    #Precondition:                  UrlDataModel exists.
+    #
+    #Postcondition:                 
+    #
+    #                                   -----
+    #
+    #Calls:                         N/A
+    #
+    #Called By:                     url_data_models_controller
+    #
+    #                                   -----
+    #Additional Comments:           
+    # 
+    #Programmer:                    ND Guthrie
+    #Date:                          20190310
+    #------------------------------------------------------------------------------
 
 	def index
 
-		# render json: UrlDataModel.all
-
 		@url_data_models = UrlDataModel.all
-
-		# render jsonapi: PdfDataModelSerializer.new(UrlDataModel.all).serialized_json
 
 	end
 
 
+
+
+
+
+
+    #------------------------------------------------------------------------------
+    #Name:                          new()
+    #
+    #Purpose:                       Controller for new.
+    #
+    #Precondition:                  
+    #
+    #Postcondition:                 
+    #
+    #                                   -----
+    #
+    #Calls:                         N/A
+    #
+    #Called By:                     url_data_models_controller
+    #
+    #                                   -----
+    #Additional Comments:           
+    # 
+    #Programmer:                    ND Guthrie
+    #Date:                          20190310
+    #------------------------------------------------------------------------------
 
 	def new
 		
@@ -22,16 +75,66 @@ require 'json/ext'
 
 
 
+
+
+
+
+    #------------------------------------------------------------------------------
+    #Name:                          show()
+    #
+    #Purpose:                       Controller for show.
+    #
+    #Precondition:                  
+    #
+    #Postcondition:                 
+    #
+    #                                   -----
+    #
+    #Calls:                         N/A
+    #
+    #Called By:                     url_data_models_controller
+    #
+    #                                   -----
+    #Additional Comments:           
+    # 
+    #Programmer:                    ND Guthrie
+    #Date:                          20190310
+    #------------------------------------------------------------------------------
+
 	def show
 
 		@url_data_model = UrlDataModel.find(params[:id])
-
-		# @json_string = PdfDataModelSerializer.new(@temp_url_data_model).serialized_json
 		
 	end
 
 
 
+
+
+
+
+
+    #------------------------------------------------------------------------------
+    #Name:                          showJSON()
+    #
+    #Purpose:                       Controller for showJSON.
+    #
+    #Precondition:                  
+    #
+    #Postcondition:                 
+    #
+    #                                   -----
+    #
+    #Calls:                         N/A
+    #
+    #Called By:                     url_data_models_controller
+    #
+    #                                   -----
+    #Additional Comments:           
+    # 
+    #Programmer:                    ND Guthrie
+    #Date:                          20190310
+    #------------------------------------------------------------------------------
 
 	def showJSON
 
@@ -40,6 +143,33 @@ require 'json/ext'
 	end
 
 
+
+
+
+
+
+
+    #------------------------------------------------------------------------------
+    #Name:                          create()
+    #
+    #Purpose:                       Controller for create.
+    #
+    #Precondition:                  
+    #
+    #Postcondition:                 
+    #
+    #                                   -----
+    #
+    #Calls:                         N/A
+    #
+    #Called By:                     url_data_models_controller
+    #
+    #                                   -----
+    #Additional Comments:           
+    # 
+    #Programmer:                    ND Guthrie
+    #Date:                          20190310
+    #------------------------------------------------------------------------------
 
 	def create
 
@@ -55,6 +185,33 @@ require 'json/ext'
 	end
 
 
+
+
+
+
+
+
+    #------------------------------------------------------------------------------
+    #Name:                          destroy()
+    #
+    #Purpose:                       Controller for destroy.
+    #
+    #Precondition:                  
+    #
+    #Postcondition:                 
+    #
+    #                                   -----
+    #
+    #Calls:                         N/A
+    #
+    #Called By:                     url_data_models_controller
+    #
+    #                                   -----
+    #Additional Comments:           
+    # 
+    #Programmer:                    ND Guthrie
+    #Date:                          20190310
+    #------------------------------------------------------------------------------
 
 	def destroy
 
@@ -104,7 +261,6 @@ require 'json/ext'
 
 		convertURLToPDF()
 		readPDFData()
-		# deletePDF()
 		
 	end
 
@@ -142,13 +298,9 @@ require 'json/ext'
 
 	def convertURLToPDF()
 
-		require "bundler/setup"
-		Bundler.require
-
 		DocRaptor.configure do |dr|
 
 		  dr.username  = "YOUR_API_KEY_HERE" # this key works for test documents
-		  # dr.debugging = true
 
 		end
 
@@ -159,10 +311,8 @@ require 'json/ext'
 			logPathName 		= "./storage/Logs/standardOutput/output.txt"
 			errorLogPathName	= "./storage/Logs/Error/"
 			pathName 			= "./storage/PDFs/"
-			address 			= params[:url_data_model][:address]
-
 			fileNamePDF 		= "docraptor-ruby.pdf"
-
+			address 			= params[:url_data_model][:address]
 
 		  	create_response = $docraptor.create_async_doc(
 			    test:             		true,                               # test documents are free but watermarked
@@ -174,8 +324,6 @@ require 'json/ext'
 		  	loop do
 			    status_response = $docraptor.get_async_doc_status(create_response.status_id)
 
-			    #puts "doc status: #{status_response.status}"
-			    
 			    case status_response.status
 			    
 			    when "completed"
@@ -183,14 +331,11 @@ require 'json/ext'
 			      	File.open("./storage/PDFs/docraptor-ruby.pdf", "wb") do |file|
 	        			file.write(doc_response)
 					end
-			      	#puts "Wrote PDF to " + pathName + fileNamePDF
 
-			      break
+			      	break
 			    
 			    when "failed"
 
-			      	#puts "FAILED"
-			      	#puts status_response
 			      	break
 
 			    else
@@ -207,6 +352,7 @@ require 'json/ext'
 		    #puts error.code          # HTTP response code
 		    #puts error.response_body # HTTP response body
 		    #puts error.backtrace[0..3].join("\n")
+
 		end		
 		
 	end
@@ -287,8 +433,6 @@ require 'json/ext'
 	#------------------------------------------------------------------------------
 
 	def deletePDF
-		
-		require 'fileutils'
 
 		FileUtils.rm_rf('./storage/PDFs/docraptor-ruby.pdf')
 
@@ -325,19 +469,25 @@ require 'json/ext'
 
 	def parseMetadata
 	
-		if(@pageInfo.include? 'Producer')		
+		if(@pageInfo.include? 'Producer')	
+
 			firstIndex = @pageInfo.index('Producer') + 11
 			params[:url_data_model][:producer] = @pageInfo[firstIndex..(@pageInfo[firstIndex + 2..@pageInfo.size()].index(',')+firstIndex)]
+		
 		end
 
 		if(@pageInfo.include? 'Title')
+
 			firstIndex = @pageInfo.index('Title') + 8
+			
 			if(@pageInfo[firstIndex..@pageInfo.size()].include? ',')
 				params[:url_data_model][:title] = @pageInfo[firstIndex..(@pageInfo[firstIndex + 2..@pageInfo.size()].index(',')+firstIndex)]
 			else
 				params[:url_data_model][:title] = @pageInfo[firstIndex..((@pageInfo.index '}') - 3)]
 			end
+		
 		end
+	
 	end
 
 
