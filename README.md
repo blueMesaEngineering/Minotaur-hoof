@@ -23,6 +23,7 @@ $ rails server
 ```
 
 For more information, see the
+
 [*Ruby on Rails Guides*](https://guides.rubyonrails.org/getting_started.html)
 
 [*Ruby on Rails Tutorial* book](http://www.railstutorial.org/book)
