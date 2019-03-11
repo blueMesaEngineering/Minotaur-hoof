@@ -1,24 +1,32 @@
-# README
+# Minotaur's Hoof Application
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This application reads a URL, converts the data to a PDF, then reads the PDF and presents the data as JSON.
 
-Things you may want to cover:
+## Getting Started
 
-* Ruby version
+To get started with the appplication, clone the repo and then install the needed gems:
 
-* System dependencies
+```
+$ bundle install
+```
 
-* Configuration
+Next, migrate the database:
 
-* Database creation
+```
+$ rails db:migrate
+```
 
-* Database initialization
+Fire up the local server:
 
-* How to run the test suite
+```
+$ rails server
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+For more information, see the
+[*Ruby on Rails Guides*](https://guides.rubyonrails.org/getting_started.html)
 
-* Deployment instructions
+[*Ruby on Rails Tutorial* book](http://www.railstutorial.org/book)
 
-* ...
+[*DocRaptor Documentation*](http://docraptor.com/)
+
+[*Heroku Application*](https://murmuring-chamber-54696.herokuapp.com/)
