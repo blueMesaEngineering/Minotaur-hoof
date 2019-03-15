@@ -483,7 +483,7 @@ class UrlDataModelsController < ApplicationController
 			if(@pageInfo[firstIndex..@pageInfo.size()].include? ',')
 				params[:url_data_model][:title] = @pageInfo[firstIndex..(@pageInfo[firstIndex + 2..@pageInfo.size()].index(',')+firstIndex)]
 			else
-				params[:url_data_model][:title] = @pageInfo[firstIndex..((@pageInfo.index '}') - 3)]
+				params[:url_data_model][:title] = @pageInfo[firstIndex..((@pageInfo.index '}') - 2)]
 			end
 		
 		end
