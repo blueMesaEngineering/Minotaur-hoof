@@ -204,7 +204,12 @@ class StaticPagesController < ApplicationController
         temp = addInfo(temp)
         temp = removeDataAndID(temp)
         temp.gsub!("\":", "\": ")
-        @json_string = addNewlineAndCarriageReturn(temp)
+        temp = addNewlineAndCarriageReturn(temp)
+        temp.gsub!("producer", "Producer")
+        temp.gsub!("title", "Title")
+        temp.strip!
+        temp[temp.size() - 2] = ""
+        @json_string = temp
 
     end
 
@@ -365,7 +370,6 @@ class StaticPagesController < ApplicationController
         index = 0
 
         level = 0
-        maxLevel = 0
 
         loop do
 
@@ -375,18 +379,24 @@ class StaticPagesController < ApplicationController
                 index += newline.size()
             end
 
-            if ((tempString[index] == ",")) #&& (index != tempString.index("},")))
-                tempString = tempString[0..index] + newline + tabCount(level) + tempString[index + 1..tempString.size()]
+            if (tempString[index] == ",")
+                if tempString[index -1] != "}"
+                    tempString = tempString[0..index] + newline + tabCount(level) + tempString[index + 1..tempString.size()]
+                end
             end
+
+            index += 1
 
             if ((tempString[index] == "}") || (tempString[index] == "]"))
-                tempString = tempString[0..index] + newline + tabCount(level) + tempString[index + 1..tempString.size()]
                 level -= 1
-                index += newline.size() + 1
+                if (tempString[index + 1] == ",")
+                    tempString = tempString[0..index - 1] + newline + tabCount(level) + tempString[index..index + 1] + newline + tabCount(level) + tempString[index + 2..tempString.size()]
+                    index += newline.size() + tabCount(level).size()+ newline.size() + tabCount(level - 1).size() + 2
+                else
+                    tempString = tempString[0..index - 1] + newline + tabCount(level) + tempString[index] + newline + tabCount(level - 1) + tempString[index + 1..tempString.size()]
+                    index += newline.size() + tabCount(level).size() + newline.size() + tabCount(level - 1).size() + 1
+                end
             end
-
-            
-            index +=1
 
             if index > tempString.size() - 1
                 break
