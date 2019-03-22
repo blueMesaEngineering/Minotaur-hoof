@@ -178,9 +178,18 @@ class UrlDataModelsController < ApplicationController
 		parseMetadata
 
 		@url_data_model = UrlDataModel.new(url_data_model_params)
-		@url_data_model.save
 
-		redirect_to @url_data_model
+		if (validateAddress(params[:url_data_model][:address]) == 0)
+
+			redirect_to error_path
+
+		else
+
+			@url_data_model.save
+			flash[:notice] = "The model has been created."
+			redirect_to @url_data_model
+
+		end
 	
 	end
 
@@ -230,6 +239,60 @@ class UrlDataModelsController < ApplicationController
 
 
 
+
+    #------------------------------------------------------------------------------
+    #Name:                          validateAddress()
+    #
+    #Purpose:                       To validate the user input for the URL address.
+    #
+    #Precondition:                  
+    #
+    #Postcondition:                 
+    #
+    #                                   -----
+    #
+    #Calls:                         N/A
+    #
+    #Called By:                     url_data_models_controller
+    #
+    #                                   -----
+    #Additional Comments:           
+    # 
+    #Programmer:                    ND Guthrie
+    #Date:                          20190321
+    #------------------------------------------------------------------------------
+
+	def validateAddress(tempString)
+
+		tempString.strip!
+
+		if (tempString =~ /https?:\/\/[\S]+/)
+
+			if ((tempString =~ /.com/) || (tempString =~ /.co/) || (tempString =~ /.edu/) || (tempString =~ /.edu/) || (tempString =~ /.org/))
+				
+				return 1
+			else
+				
+				return 0
+
+			end		
+
+		else
+
+			return 0
+
+		end
+		
+	end
+
+
+
+
+
+
+
+
+
 	#------------------------------------------------------------------------------
 	#Name:                          buildModelFromURLViaPDF
 	#
@@ -261,7 +324,6 @@ class UrlDataModelsController < ApplicationController
 
 		convertURLToPDF()
 		readPDFData()
-		
 	end
 
 
@@ -314,35 +376,41 @@ class UrlDataModelsController < ApplicationController
 			fileNamePDF 		= "docraptor-ruby.pdf"
 			address 			= params[:url_data_model][:address]
 
-		  	create_response = $docraptor.create_async_doc(
-			    test:             		true,                               # test documents are free but watermarked
-			    document_url:   		address,							# or use a url
-			    name:             		fileNamePDF,                        # help you find a document later
-			    document_type:    		"pdf",                              # pdf or xls or xlsx
-		  	)
+			if address == ""
+				flash[:notice] = "The address cannot be empty."
+			else
 
-		  	loop do
-			    status_response = $docraptor.get_async_doc_status(create_response.status_id)
+			  	create_response = $docraptor.create_async_doc(
+				    test:             		true,                               # test documents are free but watermarked
+				    document_url:   		address,							# or use a url
+				    name:             		fileNamePDF,                        # help you find a document later
+				    document_type:    		"pdf",                              # pdf or xls or xlsx
+			  	)
 
-			    case status_response.status
-			    
-			    when "completed"
-			      	doc_response = $docraptor.get_async_doc(status_response.download_id)
-			      	File.open("./storage/PDFs/docraptor-ruby.pdf", "wb") do |file|
-	        			file.write(doc_response)
-					end
+			  	loop do
+				    status_response = $docraptor.get_async_doc_status(create_response.status_id)
 
-			      	break
-			    
-			    when "failed"
+				    case status_response.status
+				    
+				    when "completed"
+				      	doc_response = $docraptor.get_async_doc(status_response.download_id)
+				      	File.open("./storage/PDFs/docraptor-ruby.pdf", "wb") do |file|
+		        			file.write(doc_response)
+						end
 
-			      	break
+				      	break
+				    
+				    when "failed"
 
-			    else
+				    	break
 
-			      	sleep 1
+				    else
 
-		    end
+				      	sleep 1
+
+			    end
+
+			end
 		 
 		end
 
