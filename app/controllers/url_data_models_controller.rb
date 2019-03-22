@@ -266,7 +266,12 @@ class UrlDataModelsController < ApplicationController
 
 		tempString.strip!
 
-		if (tempString =~ /https?:\/\/[\S]+/)
+
+		if (tempString =~ /,/)
+
+			return 0
+			
+		elsif (tempString =~ /https?:\/\/[\S]+/)
 
 			if ((tempString =~ /.com/) || (tempString =~ /.co/) || (tempString =~ /.edu/) || (tempString =~ /.edu/) || (tempString =~ /.org/))
 				
