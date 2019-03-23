@@ -33,7 +33,9 @@ gem 'json'
 
 gem 'docraptor'
 
-gem "react_on_rails", "~> 6"
+gem "react_on_rails", "~> 11.1.4"
+
+gem "webpacker", "~> 3"
 
 gem 'neatjson'
 
