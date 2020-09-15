@@ -26,12 +26,6 @@ ActiveRecord::Schema.define(version: 2019_03_10_012516) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "url_addresses", force: :cascade do |t|
-    t.string "address"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "url_data_models", force: :cascade do |t|
     t.string "address"
     t.decimal "pdf_version"

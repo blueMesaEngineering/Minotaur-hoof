@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.3'
+ruby '2.6.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.2'
@@ -35,7 +35,6 @@ gem 'docraptor'
 
 gem "react_on_rails", "~> 11.1.4"
 
-gem "webpacker", "~> 3"
 
 gem 'neatjson'
 
@@ -79,3 +78,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'mini_racer', platforms: :ruby
+
+gem "webpacker", "~> 5.2"
